@@ -14,7 +14,7 @@ class ConfigLinuxNetwork:
         self.password = config.get('database', 'hashed_password')
 
     # Para comparar as senhas, é necessário aplicar o mesmo algoritmo de hash utilizado para gerar a senha armazenada no arquivo config.ini
-    def compare_passwords(input_password, stored_hashed_password):
+    def compare_passwords(self, input_password, stored_hashed_password):
         hashed_input_password = hashlib.sha256(input_password.encode('utf-8')).hexdigest()
         return hashed_input_password == stored_hashed_password
 
@@ -30,9 +30,10 @@ class ConfigLinuxNetwork:
         input_password = getpass.getpass("password: ")
 
         #compara as senhas
-        if self.compare_passwords(input_password, self.password) and (username == self.username):
-            print("### Welcome to config linux network system ###")
-            self.logged_in = True
+        if (username == self.username):
+            if self.compare_passwords(input_password, self.password):
+                print("### Welcome to config linux network system ###")
+                self.logged_in = True
         else:
             print("Login failed. Invalid credentials.")
 
@@ -54,7 +55,7 @@ class ConfigLinuxNetwork:
                             ip_address = words[5]
                             mac = words[11]
                             mtu = words[7]
-                            state = "UP" if "UP" in words else "DOWN"
+                            state = "UP" if "UP" in words else ("DOWN" if "DOWN" in words else "UNKNOWN")
                             print(f"{intf}\t{ip_address}\t{mac}\t{mtu}\t{state}")
         except subprocess.CalledProcessError as e:
             print(f"Error executing command: {e.stderr}")
