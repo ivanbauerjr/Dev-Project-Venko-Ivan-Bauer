@@ -3,19 +3,13 @@ import configparser
 
 class ConfigLinuxNetwork:
     def __init__(self):
-        self.logged_in = False
-        self.username = "admin"
-        self.password = "23456"  # Corresponde a senha "12345" criptografada pela função criptografia "Cifra de César"
-        #Tenho consciência de que a Cifra de César não é uma criptografia segura
-        #Tenho consciência de que a senha estar diretamente no código-fonte não é uma boa prática
-        self.current_user = None
 
-    # Criptografia "Cifra de César", onde cada caracter é substituído pelo caracter seguinte na tabela ASCII
-    def criptografia(s):
-        chars = []
-        for c in s:
-            chars.append(chr(ord(c) + 1))
-        return ''.join(chars)[::-1]
+        config = configparser.ConfigParser()
+        config.read('config.ini')
+
+        self.logged_in = False
+        self.username = config.get('database', 'username')
+        self.password = config.get('database', 'hashed_password')
 
     def login(self):
         if self.logged_in:
@@ -32,7 +26,6 @@ class ConfigLinuxNetwork:
         if username == self.username and password == self.password:
             print("Login successful.")
             self.logged_in = True
-            self.current_user = username
         else:
             print("Login failed. Invalid credentials.")
 
