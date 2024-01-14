@@ -30,10 +30,9 @@ class ConfigLinuxNetwork:
         input_password = getpass.getpass("password: ")
 
         #compara as senhas
-        if (username == self.username):
-            if self.compare_passwords(input_password, self.password):
-                print("\n### Welcome to config linux network system ###")
-                self.logged_in = True
+        if (username == self.username) and self.compare_passwords(input_password, self.password):
+            print("\n### Welcome to config linux network system ###")
+            self.logged_in = True
         else:
             print("Login failed. Invalid credentials.")
 
@@ -89,7 +88,7 @@ class ConfigLinuxNetwork:
 
         try:
             # Tentar criar a bridge
-            subprocess.run(["brctl", "addbr", bridge_name], check=True)
+            subprocess.run(["sudo", "brctl", "addbr", bridge_name], check=True)
             print(f"Bridge '{bridge_name}' successfully created.")
 
         except subprocess.CalledProcessError as e:
