@@ -118,7 +118,7 @@ class ConfigLinuxNetwork:
 
         try:
             # Tentar configurar o IP
-            subprocess.run(["ip", "addr", "add", ip_address, "dev", interface_name], check=True)
+            subprocess.run(["sudo", "ip", "addr", "add", ip_address, "dev", interface_name], check=True)
             print(f"IP Address '{ip_address}' successfully configured.")
 
         except subprocess.CalledProcessError as e:
@@ -140,7 +140,7 @@ class ConfigLinuxNetwork:
             self.create_bridge()
 
         elif command.lower() == "config ip":
-            print("Not implemented yet.")
+            self.config_ip()
 
         #R0.4 Deve existir um comando para sair do sistema
         elif command.lower() == "exit":
